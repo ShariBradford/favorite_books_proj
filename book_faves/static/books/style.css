@@ -1,0 +1,24 @@
+nav {
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+}
+
+.dashboard {
+    display:flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.book-list {
+    flex: 3;
+    margin: 10px 10px 10px 20px;
+}
+
+.dashboard form {
+    flex: 2;
+    margin: 10px;
+}
+
+.favorite-book {
+    font-style: italic;
+}

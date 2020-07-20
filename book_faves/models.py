@@ -25,13 +25,12 @@ class BookManager(models.Manager):
             title=postData["title"],
             description=postData["description"],
             uploaded_by_id=user_id, 
-            users_who_like_id=user_id,
         )    
 
 class Book(models.Model):
     # id INT
     title = models.CharField(max_length=255)
-    description =  models.CharField(max_length=255)
+    description =  models.TextField()
     uploaded_by = models.ForeignKey(User,related_name="books_uploaded", on_delete=models.CASCADE)
     users_who_like = models.ManyToManyField(User, related_name="liked_books")    
     created_at = models.DateTimeField(auto_now_add = True)

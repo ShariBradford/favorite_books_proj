@@ -18,29 +18,61 @@
             </div>
         </nav>
 
-        <div class="book-list">
-            <p>All Books:</p>
+        <div class="dashboard">
+        
+            <form action="/books/new" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>Add a Favorite Book</legend>
+                </fieldset>
 
-            {% for book in books %}
-            <div class="book">
-                <p>
-                    <a href="/books/{{ book.id }}">{{ book.title }}</a>
-                </p>
-                <p>
-                    (added by {{ book.uploaded_by.full_name }})
-                </p>
-                <p>
-                    {% if book.id in user.liked_books.all %}
-                    <span class="favorite-book">this is one of your favorites</span>
-                    {% else %}
-                    <a href="/books/{{ book.id }}/favorite">Add to Favorites</a>
-                    {% endif %}
-                </p>
-            </div>
-            {% endfor %}
-        </div>
+                {% if messages%}
+                    {% for message in messages %}
+                    <p class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} py-1 my-1" role="alert">
+                        {{ message }}
+                    </p>
+                    {%  endfor %}
+                {% endif %}
 
-    </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <div class="message"></div>
+                    <input type="text" class="form-control" name="title" id="title">
+                </div>
+    
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <div class="message"></div>
+                    <input type="text" class="form-control" name="description" id="description">
+                </div>
+
+                <button type="submit" class="btn btn-primary mb-2">Add</button>
+            </form>  
+
+            <div class="book-list">
+                <h3>All Books:</h3>
+
+                {% for book in books %}
+                <div class="book">
+                    <p class="mt-1">
+                        <a href="/books/{{ book.id }}">{{ book.title }}</a>
+                    </p>
+                    <p class="mt-1">
+                        (added by {{ book.uploaded_by.full_name }})
+                    </p>
+                    <p class="mt-1">
+                        {% if book in user.liked_books.all %}
+                        <span class="favorite-book">this is one of your favorites</span>
+                        {% else %}
+                        <a href="/books/{{ book.id }}/favorite">Add to Favorites</a>
+                        {% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+            </div> <!-- div.book-list-->
+        </div> <!-- div.dashboard-->
+
+    </div> <!-- div.container-->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

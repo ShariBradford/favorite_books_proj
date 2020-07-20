@@ -142,10 +142,10 @@ class UserManager(models.Manager):
 
 class User(models.Model):
     # id INT
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=45)
+    last_name = models.CharField(max_length=45)
     birth_date = models.DateTimeField(default=datetime.date.today)
-    email = models.EmailField(max_length=255)
+    email = models.EmailField(max_length=45)
     password = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)

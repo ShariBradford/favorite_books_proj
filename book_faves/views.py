@@ -29,7 +29,7 @@ def show_book(request,book_id):
         'mode': mode,
     }
 
-    return render(request,f"/books/show.html", context)
+    return render(request,"books/show.html", context)
 
 def create_book(request):
     #print(request.POST)
@@ -48,7 +48,38 @@ def create_book(request):
     return redirect("/books")
 
 def add_to_favorites(request,book_id):
-    pass
+    book = Book.objects.get(id=book_id)
+    book.users_who_like.add(User.objects.get(id=request.session['user_id']))
+    return redirect("/books")
 
 def remove_from_favorites(request,book_id):
-    pass
+    book = Book.objects.get(id=book_id)
+    book.users_who_like.remove(User.objects.get(id=request.session['user_id']))
+    return redirect("/books")
+
+def update_book(request, book_id):
+    errors = Book.objects.basic_validator(request.POST, request.session['user_id'])
+    if errors: 
+        for k,v in errors.items():
+            messages.add_message(request,messages.ERROR,v)
+        
+    else:
+        book = Book.objects.get(id=book_id)
+        book.title = request.POST['title']
+        book.description = request.POST['description']
+        book.save()
+
+    return redirect(f"/books/{book_id}")
+
+def delete_book(request, book_id):
+    book = Book.objects.get(id=book_id)
+    book.delete()
+    return redirect("/books")
+
+def show_favorites(request):
+    context = {
+        'user': User.objects.get(id=request.session['user_id'])
+    }
+    return render(request,'books/my-faves.html', context)
+
+

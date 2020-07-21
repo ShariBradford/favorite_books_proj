@@ -14,13 +14,14 @@
         <nav class="navbar">
             <h3 class="nav-item navbar-text">Welcome, {{ user.first_name}}!</h3>
             <div class="nav navbar-right">
+                <a href="/books/my_faves" class="nav-item nav-link">My Favorites</a>
                 <a href="/logout" class="nav-item nav-link">Logout</a>
             </div>
         </nav>
 
         <div class="dashboard">
         
-            <form action="/books/new" method="post">
+            <form class="col-5" action="/books/new" method="post">
                 {% csrf_token %}
                 <fieldset>
                     <legend>Add a Favorite Book</legend>
@@ -49,18 +50,18 @@
                 <button type="submit" class="btn btn-primary mb-2">Add</button>
             </form>  
 
-            <div class="book-list">
+            <div class="col-5 book-list">
                 <h3>All Books:</h3>
 
                 {% for book in books %}
                 <div class="book">
-                    <p class="mt-1">
+                    <p class="my-0 py-0">
                         <a href="/books/{{ book.id }}">{{ book.title }}</a>
                     </p>
-                    <p class="mt-1">
-                        (added by {{ book.uploaded_by.full_name }})
+                    <p class="my-0 py-0">
+                        (added by {% if book.uploaded_by.id == user.id %}you{% else %}{{ book.uploaded_by.full_name }}{% endif %})
                     </p>
-                    <p class="mt-1">
+                    <p class="mt-0 pt-0">
                         {% if book in user.liked_books.all %}
                         <span class="favorite-book">this is one of your favorites</span>
                         {% else %}
